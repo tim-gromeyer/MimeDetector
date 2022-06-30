@@ -113,6 +113,14 @@
         <source>&amp;Find</source>
         <translation>&amp;Finden</translation>
     </message>
+    <message>
+        <source>&amp;Help</source>
+        <translation>&amp;Hilfe</translation>
+    </message>
+    <message>
+        <source>Simple app to recognize mime types.</source>
+        <translation>Einfache App zum Erkennen von MIME-Typen.</translation>
+    </message>
 </context>
 <context>
     <name>MimetypeModel</name>

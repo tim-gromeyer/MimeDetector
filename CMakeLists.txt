@@ -18,6 +18,7 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets LinguistTools)
 set(TS_FILES translations/MimeDetector_de_DE.ts)
 set(RC_FILES
     translations/translations.qrc
+    ressources/ressources.qrc
 )
 
 include(cmake/TranslationUtils.cmake)

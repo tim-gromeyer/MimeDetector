@@ -18,6 +18,7 @@ int main(int argc, char *argv[])
     QApplication a(argc, argv);
     a.setApplicationDisplayName(QStringLiteral("MimeDetector"));
     a.setApplicationVersion(APP_VERSION);
+    a.setWindowIcon(QIcon(QStringLiteral(":/logo.png")));
 
     QCommandLineParser parser;
     parser.addHelpOption();

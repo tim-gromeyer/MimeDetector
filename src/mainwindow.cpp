@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "mimetypemodel.h"
+#include "about.h"
 
 #include <QAction>
 #include <QApplication>
@@ -17,9 +18,11 @@
 #include <QItemSelectionModel>
 #include <QMimeDatabase>
 #include <QMimeType>
+#include <QSettings>
+#include <QScreen>
 
 
-MainWindow::MainWindow(QString f, QWidget *parent)
+MainWindow::MainWindow(const QString &f, QWidget *parent)
     : QMainWindow(parent)
     , model(new MimetypeModel(this))
     , treeView(new QTreeView(this))
@@ -44,13 +47,18 @@ MainWindow::MainWindow(QString f, QWidget *parent)
     centralSplitter->addWidget(detailsText);
 
     updateFindActions();
+
+    settings = new QSettings(QStringLiteral("SME"), QStringLiteral("MimeDetector"));
+    loadSettings();
+
+
 }
 
 void MainWindow::setupMenuBar()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     QAction *detectFileAction =
-        fileMenu->addAction(tr("&Detect File Type"), this, &MainWindow::detectFile);
+        fileMenu->addAction(tr("&Detect File Type"), this, &MainWindow::onDetectFile);
     detectFileAction->setShortcuts(QKeySequence::Open);
 
     QAction *exitAction = fileMenu->addAction(tr("E&xit"), qApp, &QApplication::quit);
@@ -66,7 +74,9 @@ void MainWindow::setupMenuBar()
     findPreviousAction = findMenu->addAction(tr("Find &Previous"), this, &MainWindow::findPrevious);
     findPreviousAction->setShortcuts(QKeySequence::FindPrevious);
 
-    menuBar()->addMenu(tr("&About"))->addAction(tr("&About Qt"), qApp, &QApplication::aboutQt);
+    QMenu *menuHelp = menuBar()->addMenu(tr("&Help"));
+    menuHelp->addAction(tr("&About Qt"), qApp, &QApplication::aboutQt);
+    menuHelp->addAction(tr("&About"), this, &MainWindow::helpAbout);
 }
 
 void MainWindow::currentChanged(const QModelIndex &index)
@@ -83,11 +93,26 @@ void MainWindow::selectAndGoTo(const QModelIndex &index)
     treeView->setCurrentIndex(index);
 }
 
-void MainWindow::detectFile()
+void MainWindow::onDetectFile()
 {
-    const QString fileName = QFileDialog::getOpenFileName(this, tr("Choose File"));
+    QString fileName;
+
+    fileName = QFileDialog::getOpenFileName(this, tr("Choose File"));
     if (fileName.isEmpty())
         return;
+
+    detectFile(fileName);
+}
+
+void MainWindow::detectFile(const QString &fileName)
+{
+#ifdef Q_OS_WASM
+    return;
+#endif
+
+    if (fileName.isEmpty())
+        return onDetectFile();
+
     QMimeDatabase mimeDatabase;
     const QFileInfo fi(fileName);
     const QMimeType mimeType = mimeDatabase.mimeTypeForFile(fi);
@@ -147,4 +172,44 @@ void MainWindow::find()
     updateFindActions();
     if (!findMatches.isEmpty())
         selectAndGoTo(findMatches.constFirst());
+}
+
+void MainWindow::helpAbout()
+{
+    About dia;
+    dia.deleteCreditPage();
+    dia.setAppUrl(QStringLiteral("https://github.com/software-made-easy/MimeDetector"));
+    dia.setDescription(tr("Simple app to recognize mime types."));
+
+    dia.exec();
+}
+
+void MainWindow::loadSettings()
+{
+    const QByteArray geo = settings->value(QStringLiteral("geometry"),
+                                           QByteArrayLiteral("")).toByteArray();
+    if (geo.isEmpty()) {
+        const QRect availableGeometry = QGuiApplication::screenAt(pos())->availableGeometry();
+        resize(availableGeometry.width() / 2, (availableGeometry.height() * 2) / 3);
+        move((availableGeometry.width() - width()) / 2,
+             (availableGeometry.height() - height()) / 2);
+    }
+    else {
+        restoreGeometry(geo);
+    }
+
+    restoreState(settings->value(QStringLiteral("state"), QByteArrayLiteral("")).toByteArray());
+
+}
+
+void MainWindow::saveSettings()
+{
+    settings->setValue("geometry", saveGeometry());
+    settings->setValue("state", saveState());
+}
+
+void MainWindow::closeEvent(QCloseEvent *e)
+{
+    saveSettings();
+    QMainWindow::closeEvent(e);
 }
