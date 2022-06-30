@@ -40,9 +40,9 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Checkout repository
+    - name: Install deps
       run: |
-        apt install qtbase5-dev-tools qtbase5-dev
+        sudo apt-get install qtbase5-dev-tools qtbase5-dev
 
     # Initializes the CodeQL tools for scanning.
     - name: Initialize CodeQL
