@@ -37,7 +37,7 @@ MarkdownEdit, as the name suggests, is a simple and easy program for creating an
 
 ## Preview
 
-A preview is available [here](https://software-made-easy.github.io/mimedetector.html).
+A preview is available [here](https://software-made-easy.github.io/MimeDetector/mimedetector.html).
 
 Important:
 - Performance might be bad

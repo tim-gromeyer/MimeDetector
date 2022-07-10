@@ -97,7 +97,6 @@ void MainWindow::onDetectFile()
     QFileDialog::getOpenFileContent(tr("Files (*.*)"), fileContentReady);
 #else
     QFileDialog dialog(this, tr("Open MarkDown File"));
-    dialog.setMimeTypeFilters({"text/markdown"});
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     if (dialog.exec() == QDialog::Accepted) {
         const QString fileName = dialog.selectedFiles().at(0);
