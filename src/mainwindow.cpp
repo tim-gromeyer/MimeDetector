@@ -55,17 +55,12 @@ MainWindow::MainWindow(const QString &f, QWidget *parent)
 void MainWindow::setupMenuBar()
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
-    QAction *detectFileAction =
-        fileMenu->addAction(tr("&Detect File Type"), this, &MainWindow::onDetectFile);
-    detectFileAction->setShortcuts(QKeySequence::Open);
+    fileMenu->addAction(tr("&Detect File Type"), this, &MainWindow::onDetectFile, QKeySequence::Open);
 
-    QAction *exitAction = fileMenu->addAction(tr("E&xit"), qApp, &QApplication::quit);
-    exitAction->setShortcuts(QKeySequence::Quit);
+    fileMenu->addAction(tr("E&xit"), qApp, &QApplication::quit, QKeySequence::Quit);
 
     QMenu *findMenu = menuBar()->addMenu(tr("&Edit"));
-    QAction *findAction =
-        findMenu->addAction(tr("&Find"), this, &MainWindow::find);
-    findAction->setShortcuts(QKeySequence::Find);
+    findMenu->addAction(tr("&Find"), this, &MainWindow::find, QKeySequence::Find);
 
     findNextAction = findMenu->addAction(tr("Find &Next"), this, &MainWindow::findNext);
     findNextAction->setShortcuts(QKeySequence::FindNext);
@@ -73,14 +68,14 @@ void MainWindow::setupMenuBar()
     findPreviousAction->setShortcuts(QKeySequence::FindPrevious);
 
     QMenu *menuHelp = menuBar()->addMenu(tr("&Help"));
-    menuHelp->addAction(tr("&About Qt"), qApp, &QApplication::aboutQt);
     menuHelp->addAction(tr("&About"), this, &MainWindow::helpAbout);
+    menuHelp->addAction(tr("&About Qt"), qApp, &QApplication::aboutQt);
 }
 
 void MainWindow::currentChanged(const QModelIndex &index)
 {
     if (index.isValid())
-        detailsText->setText(MimetypeModel::formatMimeTypeInfo(model->mimeType(index)));
+        detailsText->setHtml(MimetypeModel::formatMimeTypeInfo(model->mimeType(index)));
     else
         detailsText->clear();
 }
@@ -105,7 +100,10 @@ void MainWindow::onDetectFile()
     if (fileName.isEmpty())
         return;
 
-    detectFile(fileName);
+    QFile f(fileName);
+    f.open(QIODevice::ReadOnly);
+
+    detectFile(fileName, f.readAll());
 #endif
 }
 
