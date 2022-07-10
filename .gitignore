@@ -1,0 +1,5 @@
+*.user
+docs/*.html
+docs/*.wasm
+docs/*.js
+docs/qtlogo.svg

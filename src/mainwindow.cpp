@@ -96,14 +96,19 @@ void MainWindow::onDetectFile()
     };
     QFileDialog::getOpenFileContent(tr("Files (*.*)"), fileContentReady);
 #else
-    const QString fileName = QFileDialog::getOpenFileName(this, tr("Choose File"));
-    if (fileName.isEmpty())
-        return;
+    QFileDialog dialog(this, tr("Open MarkDown File"));
+    dialog.setMimeTypeFilters({"text/markdown"});
+    dialog.setAcceptMode(QFileDialog::AcceptOpen);
+    if (dialog.exec() == QDialog::Accepted) {
+        const QString fileName = dialog.selectedFiles().at(0);
+        if (fileName.isEmpty())
+            return;
 
-    QFile f(fileName);
-    f.open(QIODevice::ReadOnly);
+        QFile f(fileName);
+        f.open(QIODevice::ReadOnly);
 
-    detectFile(fileName, f.readAll());
+        detectFile(fileName, f.readAll());
+    }
 #endif
 }
 
