@@ -36,7 +36,7 @@ MainWindow::MainWindow(const QString &f, QWidget *parent)
     treeView->setUniformRowHeights(true);
     treeView->setModel(model);
 
-    QList<QStandardItem *> items = model->findItems("application/octet-stream", Qt::MatchContains | Qt::MatchFixedString | Qt::MatchRecursive);
+    QList<QStandardItem *> items = model->findItems(QStringLiteral("application/octet-stream"), Qt::MatchContains | Qt::MatchFixedString | Qt::MatchRecursive);
     if (!items.isEmpty())
         treeView->expand(model->indexFromItem(items.constFirst()));
 
@@ -50,8 +50,6 @@ MainWindow::MainWindow(const QString &f, QWidget *parent)
 
     settings = new QSettings(QStringLiteral("SME"), QStringLiteral("MimeDetector"));
     loadSettings();
-
-
 }
 
 void MainWindow::setupMenuBar()
@@ -95,27 +93,30 @@ void MainWindow::selectAndGoTo(const QModelIndex &index)
 
 void MainWindow::onDetectFile()
 {
-    QString fileName;
-
-    fileName = QFileDialog::getOpenFileName(this, tr("Choose File"));
+#ifdef Q_OS_WASM
+    auto fileContentReady = [this](const QString &newFile, const QByteArray &fileContent) {
+        if (!newFile.isEmpty()) {
+            detectFile(newFile, fileContent);
+        }
+    };
+    QFileDialog::getOpenFileContent(tr("Files (*.*)"), fileContentReady);
+#else
+    const QString fileName = QFileDialog::getOpenFileName(this, tr("Choose File"));
     if (fileName.isEmpty())
         return;
 
     detectFile(fileName);
+#endif
 }
 
-void MainWindow::detectFile(const QString &fileName)
+void MainWindow::detectFile(const QString &fileName, const QByteArray &fileContents)
 {
-#ifdef Q_OS_WASM
-    return;
-#endif
-
     if (fileName.isEmpty())
         return onDetectFile();
 
     QMimeDatabase mimeDatabase;
     const QFileInfo fi(fileName);
-    const QMimeType mimeType = mimeDatabase.mimeTypeForFile(fi);
+    const QMimeType mimeType = mimeDatabase.mimeTypeForFileNameAndData(fileName, fileContents);
     const QModelIndex index = mimeType.isValid()
         ? model->indexForMimeType(mimeType.name()) : QModelIndex();
     if (index.isValid()) {

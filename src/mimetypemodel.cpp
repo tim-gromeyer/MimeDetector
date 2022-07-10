@@ -110,11 +110,7 @@ void MimetypeModel::populate()
 
 QTextStream &operator<<(QTextStream &stream, const QStringList &list)
 {
-    for (int i = 0, size = list.size(); i < size; ++i) {
-        if (i)
-            stream << ", ";
-        stream << list.at(i);
-    }
+    stream << list.join(QLatin1String(", "));
     return stream;
 }
 
@@ -126,7 +122,7 @@ QString MimetypeModel::formatMimeTypeInfo(const QMimeType &t)
 
     const QStringList &aliases = t.aliases();
     if (!aliases.isEmpty())
-        str << tr("<tr><td>Aliases:</td><td>") << " (" << aliases << ')';
+        str << tr("<tr><td>Aliases:</td><td>") << aliases;
 
     str << "</td></tr>"
         << tr("<tr><td>Comment:</td><td>") << t.comment() << "</td></tr>"

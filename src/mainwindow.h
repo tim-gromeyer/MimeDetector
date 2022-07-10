@@ -39,7 +39,8 @@ private:
     void selectAndGoTo(const QModelIndex &index);
     void updateFindActions();
 
-    void detectFile(const QString &f = QLatin1String());
+    void detectFile(const QString &fileName = QLatin1String(),
+                    const QByteArray &fileContents = QByteArrayLiteral(""));
 
     void loadSettings();
     void saveSettings();
