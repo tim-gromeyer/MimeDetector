@@ -181,7 +181,7 @@ void MainWindow::helpAbout()
 {
     About dia;
     dia.deleteCreditPage();
-    dia.setAppUrl(QStringLiteral("https://github.com/software-made-easy/MimeDetector"));
+    dia.setAppUrl(QStringLiteral("https://software-made-easy.github.io/MimeDetector/"));
     dia.setDescription(tr("Simple app to recognize mime types."));
 
     dia.exec();
