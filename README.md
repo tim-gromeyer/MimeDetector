@@ -7,7 +7,7 @@
 
 # [MimeDetector](https://software-made-easy.github.io/MimeDetector/)
 
-MarkdownEdit, as the name suggests, is a simple and easy program for creating and editing Markdown files.
+As the name suggests, MimeDetector is a simple program for recognizing the MIME type of files
 
 ## Table of contents
 
@@ -17,30 +17,18 @@ MarkdownEdit, as the name suggests, is a simple and easy program for creating an
 
 -------
 
-## Features:
+### Features
 
-- Spell checker
-- Save and load Markdown files
-- Undo-Redo
-- Preview Markdown files in real time (<1 ms)
-- Syntax highlighting editor
-- Auto-complete (close brackets, list, ...)
-- Find/Replace(Ctrl+F/Ctrl+R)
-- Export to HTML and PDF
-- Bad in resources
-- Quick opening of recent files (Button in toolbar or in the file menu)
-- Open source
-- Native look and feel
-- Remember spelling language for every document
+- Detect MIME type of files
+- Provide details about MIME types
 
-![Example](doc/images/Example.png)
+![Example](docs/images/Example.png)
 
-## Preview
+### [Preview](https://software-made-easy.github.io/MimeDetector/mimedetector.html)
 
-A preview is available [here](https://software-made-easy.github.io/MimeDetector/mimedetector.html).
+A preview is available [here](https://software-made-easy.github.io/MimeDetector/mimedetector.html)
 
 Important:
-- Performance might be bad
 - Search does not work
 
 ## Dependencies:
