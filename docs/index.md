@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-# [MimeDetector](https://software-made-easy.github.io/MimeDetector/)
+# MimeDetector
 
 As the name suggests, MimeDetector is a simple program for recognizing the MIME type of files
 
@@ -14,14 +14,14 @@ As the name suggests, MimeDetector is a simple program for recognizing the MIME 
 
 -------
 
-### Features
+## Features
 
 - Detect MIME type of files
 - Provide details about MIME types
 
 ![Example](https://github.com/software-made-easy/MimeDetector/raw/main/docs/images/Example.png)
 
-### [Preview](https://software-made-easy.github.io/MimeDetector/mimedetector.html)
+## Preview
 
 A preview is available [here](https://software-made-easy.github.io/MimeDetector/mimedetector.html)
 
