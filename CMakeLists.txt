@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.12)
 
-project(MimeDetector VERSION 1.2.5 LANGUAGES CXX C)
+project(MimeDetector VERSION 1.2.5 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 
@@ -24,8 +24,6 @@ set(RC_FILES
 include(cmake/TranslationUtils.cmake)
 
 set(PROJECT_SOURCES
-    src/about.cpp
-    src/about.h
     src/main.cpp
     src/mainwindow.cpp
     src/mainwindow.h

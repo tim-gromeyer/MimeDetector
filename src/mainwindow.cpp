@@ -18,7 +18,6 @@
 #include <QItemSelectionModel>
 #include <QMimeDatabase>
 #include <QMimeType>
-#include <QSettings>
 #include <QScreen>
 
 
@@ -48,8 +47,11 @@ MainWindow::MainWindow(const QString &f, QWidget *parent)
 
     updateFindActions();
 
-    settings = new QSettings(QStringLiteral("SME"), QStringLiteral("MimeDetector"));
-    loadSettings();
+    // Resize
+    const QRect availableGeometry = QGuiApplication::screenAt(pos())->availableGeometry();
+    resize(availableGeometry.width() / 2, (availableGeometry.height() * 2) / 3);
+    move((availableGeometry.width() - width()) / 2,
+         (availableGeometry.height() - height()) / 2);
 }
 
 void MainWindow::setupMenuBar()
@@ -68,7 +70,7 @@ void MainWindow::setupMenuBar()
     findPreviousAction->setShortcuts(QKeySequence::FindPrevious);
 
     QMenu *menuHelp = menuBar()->addMenu(tr("&Help"));
-    menuHelp->addAction(tr("&About"), this, &MainWindow::helpAbout);
+    menuHelp->addAction(QIcon::fromTheme(QStringLiteral("help-about")), tr("&About"), this, &MainWindow::helpAbout);
     menuHelp->addAction(tr("&About Qt"), qApp, &QApplication::aboutQt);
 }
 
@@ -161,6 +163,7 @@ void MainWindow::find()
     inputDialog.setLabelText(tr("Text:"));
     if (inputDialog.exec() != QDialog::Accepted)
         return;
+
     const QString value = inputDialog.textValue().trimmed();
     if (value.isEmpty())
         return;
@@ -179,40 +182,24 @@ void MainWindow::find()
 
 void MainWindow::helpAbout()
 {
-    About dia;
-    dia.deleteCreditPage();
-    dia.setAppUrl(QStringLiteral("https://software-made-easy.github.io/MimeDetector/"));
-    dia.setDescription(tr("Simple app to recognize mime types."));
-
-    dia.exec();
-}
-
-void MainWindow::loadSettings()
-{
-    const QByteArray geo = settings->value(QStringLiteral("geometry"),
-                                           QByteArrayLiteral("")).toByteArray();
-    if (geo.isEmpty()) {
-        const QRect availableGeometry = QGuiApplication::screenAt(pos())->availableGeometry();
-        resize(availableGeometry.width() / 2, (availableGeometry.height() * 2) / 3);
-        move((availableGeometry.width() - width()) / 2,
-             (availableGeometry.height() - height()) / 2);
-    }
-    else {
-        restoreGeometry(geo);
-    }
-
-    restoreState(settings->value(QStringLiteral("state"), QByteArrayLiteral("")).toByteArray());
-
-}
-
-void MainWindow::saveSettings()
-{
-    settings->setValue("geometry", saveGeometry());
-    settings->setValue("state", saveState());
-}
-
-void MainWindow::closeEvent(QCloseEvent *e)
-{
-    saveSettings();
-    QMainWindow::closeEvent(e);
+    QMessageBox::about(this, tr("About"), tr("<h2>MimeDetector</h2>\n"
+                                             "<p>As the name suggests, MimeDetector is a simple program for recognizing the MIME type of files.</p>\n"
+                                             "<h2>About</h2>\n"
+                                             "<table class=\"table\" style=\"border-style: none;\">\n"
+                                             "<tbody>\n"
+                                             "<tr>\n"
+                                             "<td>Version:</td>\n"
+                                             "<td>%1</td>\n"
+                                             "</tr>\n"
+                                             "<tr>\n"
+                                             "<td>Qt Version:</td>\n"
+                                             "<td>%2</td>\n"
+                                             "</tr>\n"
+                                             "<tr>\n"
+                                             "<td>Homepage:</td>\n"
+                                             "<td><a href=\"https://software-made-easy.github.io/MimeDetector/\">https://software-made-easy.github.io/MimeDetector/</a></td>\n"
+                                             "</tr>\n"
+                                             "</tbody>\n"
+                                             "</table>"
+                                             ).arg(APP_VERSION, qVersion()));
 }

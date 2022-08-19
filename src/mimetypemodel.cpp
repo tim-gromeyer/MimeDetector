@@ -66,8 +66,8 @@ void MimetypeModel::populate()
 
     // Move top level types to rear end of list, sort this partition,
     // create top level items and truncate the list.
-    Iterator end = allTypes.end();
-    const Iterator topLevelStart =
+    auto end = allTypes.end();
+    auto topLevelStart =
         std::stable_partition(allTypes.begin(), end,
                               [](const QMimeType &t) { return !t.parentMimeTypes().isEmpty(); });
     std::stable_sort(topLevelStart, end);
@@ -94,7 +94,7 @@ void MimetypeModel::populate()
         // Move types inheriting the parent type to rear end of list, sort this partition,
         // append the items to parent and truncate the list.
         const QString &parentName = nameIndexIt.key();
-        const Iterator start =
+        auto start =
             std::stable_partition(allTypes.begin(), end, [parentName](const QMimeType &t)
                                   { return !t.parentMimeTypes().contains(parentName); });
         std::stable_sort(start, end);

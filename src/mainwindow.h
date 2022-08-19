@@ -20,9 +20,6 @@ class MainWindow : public QMainWindow
 public:
     explicit MainWindow(const QString &f = QLatin1String(), QWidget *parent = nullptr);
 
-protected:
-    void closeEvent(QCloseEvent *);
-
 private slots:
     void currentChanged(const QModelIndex &);
     void onDetectFile();
@@ -42,9 +39,6 @@ private:
     void detectFile(const QString &fileName = QLatin1String(),
                     const QByteArray &fileContents = QByteArrayLiteral(""));
 
-    void loadSettings();
-    void saveSettings();
-
     MimetypeModel *model;
     QTreeView *treeView;
     QTextEdit *detailsText;
@@ -52,8 +46,6 @@ private:
     QAction *findPreviousAction;
     QModelIndexList findMatches;
     int findIndex;
-
-    QSettings *settings;
 };
 
 #endif // MAINWINDOW_H
