@@ -1,6 +1,5 @@
 #include "mainwindow.h"
 #include "mimetypemodel.h"
-#include "about.h"
 
 #include <QAction>
 #include <QApplication>
