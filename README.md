@@ -3,7 +3,7 @@
 [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 
-# [MimeDetector](https://software-made-easy.github.io/MimeDetector/)
+# [MimeDetector](https://tim-gromeyer.github.io/MimeDetector/)
 
 As the name suggests, MimeDetector is a simple program for recognizing the MIME type of files
 
@@ -22,9 +22,9 @@ As the name suggests, MimeDetector is a simple program for recognizing the MIME 
 
 ![Example](docs/images/Example.png)
 
-### [Preview](https://software-made-easy.github.io/MimeDetector/mimedetector.html)
+### [Preview](https://tim-gromeyer.github.io/MimeDetector/mimedetector.html)
 
-A preview is available [here](https://software-made-easy.github.io/MimeDetector/mimedetector.html)
+A preview is available [here](https://tim-gromeyer.github.io/MimeDetector/mimedetector.html)
 
 Important:
 - Search does not work
@@ -39,14 +39,14 @@ Important:
 
 Run the [build script](scripts/build.sh) or follow the instructions below.
 
-- Clone MarkdownEdit: `git clone https://github.com/software-made-easy/MimeDetector --depth=1 && cd MimeDetector`
+- Clone MarkdownEdit: `git clone https://github.com/tim-gromeyer/MimeDetector --depth=1 && cd MimeDetector`
 - Create the build folder: `mkdir build && cd build`.
 - Now create a Makefile with CMake: `cmake ..`.
 - Build it: `cmake --build . -j4`
 
 In summary:
 ```bash
-git clone https://github.com/software-made-easy/MimeDetector --depth=1 && cd MimeDetector
+git clone https://github.com/tim-gromeyer/MimeDetector --depth=1 && cd MimeDetector
 mkdir build && cd build
 cmake ..
 cmake --build . -j4
