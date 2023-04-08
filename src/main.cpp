@@ -14,9 +14,7 @@ int main(int argc, char *argv[])
 #error You must use Qt 5.10 or newer
 #endif
 
-
     QApplication a(argc, argv);
-    a.setApplicationDisplayName(QStringLiteral("MimeDetector"));
     a.setApplicationVersion(APP_VERSION);
     a.setWindowIcon(QIcon(QStringLiteral(":/logo.png")));
 

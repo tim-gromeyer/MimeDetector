@@ -10,7 +10,7 @@
 
 Q_DECLARE_METATYPE(QMimeType)
 
-typedef QList<QStandardItem *> StandardItemList;
+using StandardItemList = QList<QStandardItem *>;
 
 enum { mimeTypeRole = Qt::UserRole + 1, iconQueriedRole = Qt::UserRole + 2 };
 
@@ -59,7 +59,7 @@ QMimeType MimetypeModel::mimeType(const QModelIndex &index) const
 
 void MimetypeModel::populate()
 {
-    typedef QList<QMimeType>::Iterator Iterator;
+    using Iterator = QList<QMimeType>::Iterator;
 
     QMimeDatabase mimeDatabase;
     QList<QMimeType> allTypes = mimeDatabase.allMimeTypes();

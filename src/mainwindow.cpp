@@ -29,6 +29,8 @@ MainWindow::MainWindow(const QString &f, QWidget *parent)
 {
     setupMenuBar();
 
+    setWindowTitle(tr("MimeDetector"));
+
     QSplitter *centralSplitter = new QSplitter(this);
     setCentralWidget(centralSplitter);
     treeView->setUniformRowHeights(true);
@@ -58,10 +60,10 @@ void MainWindow::setupMenuBar()
     QMenu *fileMenu = menuBar()->addMenu(tr("&File"));
     fileMenu->addAction(tr("&Detect File Type"), this, &MainWindow::onDetectFile, QKeySequence::Open);
 
-    fileMenu->addAction(tr("E&xit"), qApp, &QApplication::quit, QKeySequence::Quit);
+    fileMenu->addAction(QIcon::fromTheme(QStringLiteral("application-exit")), tr("E&xit"), qApp, &QApplication::quit, QKeySequence::Quit);
 
     QMenu *findMenu = menuBar()->addMenu(tr("&Edit"));
-    findMenu->addAction(tr("&Find"), this, &MainWindow::find, QKeySequence::Find);
+    findMenu->addAction(QIcon::fromTheme(QStringLiteral("edit-find")), tr("&Find"), this, &MainWindow::find, QKeySequence::Find);
 
     findNextAction = findMenu->addAction(tr("Find &Next"), this, &MainWindow::findNext);
     findNextAction->setShortcuts(QKeySequence::FindNext);
@@ -97,7 +99,7 @@ void MainWindow::onDetectFile()
     };
     QFileDialog::getOpenFileContent(tr("Files (*.*)"), fileContentReady);
 #else
-    QFileDialog dialog(this, tr("Open MarkDown File"));
+    QFileDialog dialog(this, tr("Open File"));
     dialog.setAcceptMode(QFileDialog::AcceptOpen);
     if (dialog.exec() == QDialog::Accepted) {
         const QString fileName = dialog.selectedFiles().at(0);
@@ -171,7 +173,7 @@ void MainWindow::find()
     findIndex = 0;
     const QList<QStandardItem *> items =
             model->findItems(value, Qt::MatchContains | Qt::MatchFixedString | Qt::MatchRecursive);
-    for (const QStandardItem *item : items)
+    for (const auto item : items)
         findMatches.append(model->indexFromItem(item));
     statusBar()->showMessage(tr("%n mime types match \"%1\".", 0, findMatches.size()).arg(value));
     updateFindActions();
